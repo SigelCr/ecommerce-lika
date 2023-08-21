@@ -16,12 +16,40 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { loginGoogle, onSigIn } from "../../../firebaseConfig";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+
+  const [userCredentials, setUserCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await onSigIn(userCredentials);
+
+      if (res.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const googleSignIn = async () => {
+    const res = await loginGoogle();
+    console.log(res);
+  };
 
   return (
     <Box
@@ -35,7 +63,7 @@ const Login = () => {
         // backgroundColor: theme.palette.secondary.main,
       }}
     >
-      <form>
+      <form onSubmit={handleSubmit}>
         <Grid
           container
           rowSpacing={2}
@@ -43,7 +71,12 @@ const Login = () => {
           justifyContent={"center"}
         >
           <Grid item xs={10} md={12}>
-            <TextField name="email" label="Email" fullWidth />
+            <TextField
+              name="email"
+              label="Email"
+              onChange={handleChange}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={10} md={12}>
             <FormControl variant="outlined" fullWidth>
@@ -51,6 +84,7 @@ const Login = () => {
                 Contraseña
               </InputLabel>
               <OutlinedInput
+                onChange={handleChange}
                 name="password"
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
@@ -99,6 +133,7 @@ const Login = () => {
                 <Button
                   variant="contained"
                   startIcon={<GoogleIcon />}
+                  onClick={googleSignIn}
                   type="button"
                   fullWidth
                   sx={{
@@ -126,7 +161,7 @@ const Login = () => {
                 <Button
                   variant="contained"
                   fullWidth
-                  onClick={()=>navigate("/register")}
+                  onClick={() => navigate("/register")}
                   type="button"
                   sx={{
                     color: "white",
