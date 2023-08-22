@@ -9,6 +9,8 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 
+import { getFirestore } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDCuvFQOE9PI7jqKGbGdhyxNOH7QDRBqbU",
   authDomain: "ecommerce-lika.firebaseapp.com",
@@ -21,6 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+export const db = getFirestore(app); //modificar documentos
 
 //SERVICIOS
 
