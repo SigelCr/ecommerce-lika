@@ -1,0 +1,10 @@
+* {
+  overflow: hidden;
+}
+a {
+  text-decoration: none;
+}
+/*Drawer*/
+.drawer {
+  background-color: rgba(0, 0, 0, 0.39); /*sombra al abrir el drawer*/
+}

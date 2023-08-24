@@ -48,6 +48,7 @@ const Cart = () => {
           <button onClick={clearCartWithAlert}>
             eliminar todos los productos
           </button>
+          <Link to="/checkout">Finalizar compra</Link>
         </div>
       ) : (
         <div>
