@@ -12,12 +12,12 @@ import {
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDCuvFQOE9PI7jqKGbGdhyxNOH7QDRBqbU",
-  authDomain: "ecommerce-lika.firebaseapp.com",
-  projectId: "ecommerce-lika",
-  storageBucket: "ecommerce-lika.appspot.com",
-  messagingSenderId: "816086411401",
-  appId: "1:816086411401:web:00fe6d0a4d37c53829be58",
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTH,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGE,
+  messagingSenderId: import.meta.env.VITE_MESSAGIN,
+  appId: import.meta.env.VITE_APPID,
 };
 
 const app = initializeApp(firebaseConfig);

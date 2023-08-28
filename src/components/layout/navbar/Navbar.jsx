@@ -10,28 +10,43 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 
 import { Link, useNavigate, Outlet } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { menuItems } from "../../../router/navigation";
 import { logout } from "../../../firebaseConfig";
 
 import style from "./Navbar.module.css";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../context/AuthContext";
 
 const drawerWidth = 200;
 
 function Navbar(props) {
+  const { logoutContext, user } = useContext(AuthContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
+  const rolAdmin = import.meta.env.VITE_ROL_ADMIN;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleLogout = () => {
+    Swal.fire({
+      position: "top",
+      title: "Sesion cerrada correctamente",
+      icon: `success`,
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      toast: true,
+    });
     logout();
+    logoutContext();
     navigate("/login");
   };
 
@@ -55,6 +70,23 @@ function Navbar(props) {
             </Link>
           );
         })}
+
+        {/* vista dashboard solo para el admin */}
+        {user.rol === rolAdmin && (
+          <Link to={"/dashboard"}>
+            <ListItem disablePadding className={style.containerMenuDrawer}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <DashboardCustomizeIcon sx={{ color: "whitesmoke" }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Dashboard"}
+                  sx={{ color: "whitesmoke" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
 
         <ListItem disablePadding>
           <ListItemButton onClick={handleLogout}>

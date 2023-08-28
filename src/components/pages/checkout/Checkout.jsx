@@ -8,7 +8,7 @@ const Checkout = () => {
 
   const [preferenceId, setPreferenceId] = useState(null);
 
-  initMercadoPago("APP_USR-ee1ef2e3-50cd-4d3e-a427-10c2b1dbda5e", {
+  initMercadoPago(import.meta.env.VITE_PUBLICKEY, {
     locale: "es-AR",
   });
 

@@ -15,10 +15,13 @@ import GoogleIcon from "@mui/icons-material/Google";
 
 import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
-import { loginGoogle, onSigIn } from "../../../firebaseConfig";
+import { useContext, useState } from "react";
+import { db, loginGoogle, onSigIn } from "../../../firebaseConfig";
+import { collection, doc, getDoc } from "firebase/firestore";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
+  const { handleLogin } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -37,8 +40,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await onSigIn(userCredentials);
-
       if (res.user) {
+        const userCollection = collection(db, "users");
+        const userRef = doc(userCollection, res.user.uid);
+        const userDoc = await getDoc(userRef); //usuario de la base de datos
+        let finalyUser = {
+          email: res.user.email,
+          rol: userDoc.data().rol,
+        };
+        console.log("usuario:", finalyUser);
+        handleLogin(finalyUser); //el usuario logeado
         navigate("/");
       }
     } catch (error) {

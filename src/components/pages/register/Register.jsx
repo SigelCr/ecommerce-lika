@@ -13,7 +13,8 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUp } from "../../../firebaseConfig";
+import { signUp, db } from "../../../firebaseConfig";
+import { setDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -33,7 +34,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let res = await signUp(userCredentials);
-    console.log(res);
+    //console.log(res);
+    //para que cuando un usuario se registre siempre sea con el rol "user"
+    if (res.user.uid) {
+      await setDoc(doc(db, "users", res.user.uid), {
+        rol: "user",
+        email: res.user.email,
+      }); //a futuro poner nombre o nick asi tambien se guarda en firebase el nick el rol y el email, asi podria poner bienvenido "nick" etc
+    }
     navigate("/login");
   };
 
