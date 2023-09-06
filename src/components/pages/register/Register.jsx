@@ -41,7 +41,7 @@ const Register = () => {
         rol: "user",
         email: res.user.email,
       }); //a futuro poner nombre o nick asi tambien se guarda en firebase el nick el rol y el email, asi podria poner bienvenido "nick" etc
-    }
+    } //taria para poner un alert que diga que te registarte con exito
     navigate("/login");
   };
 

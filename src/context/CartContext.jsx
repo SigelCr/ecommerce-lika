@@ -3,7 +3,9 @@ import { createContext, useState } from "react";
 export const CartContext = createContext();
 
 const CartContextComponent = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
 
   const addToCart = (product) => {
     let existe = cart.some((e) => e.id === product.id); //tira si se repite un id
@@ -17,8 +19,11 @@ const CartContextComponent = ({ children }) => {
           return elemento;
         }
       });
+      //persistencia de datos con localStorage en el carrito asi cuando se recarga queda todo igual
+      localStorage.setItem("cart", JSON.stringify(newArr));
       setCart(newArr);
     } else {
+      localStorage.setItem("cart", JSON.stringify([...cart, product]));
       setCart([...cart, product]);
     }
   };
@@ -30,10 +35,12 @@ const CartContextComponent = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
+    localStorage.removeItem("cart"); //remove el item que se llama "cart"
   };
 
   const deleteById = (id) => {
     const newArr = cart.filter((elemento) => elemento.id !== id);
+    localStorage.setItem("cart", JSON.stringify(newArr));
     setCart(newArr);
   };
 
