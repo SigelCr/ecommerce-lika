@@ -122,7 +122,7 @@ const Login = () => {
             to="/forgot-password"
             style={{ color: "steelblue", marginTop: "10px" }}
           >
-            ¿Olvidaste tu contraseña?
+            ¿Olvidaste tu contraseña? wachin
           </Link>
           <Grid container justifyContent="center" spacing={3} mt={2}>
             <Grid item xs={10} md={5}>
