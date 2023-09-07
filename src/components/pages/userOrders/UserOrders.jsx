@@ -34,9 +34,16 @@ const UserOrders = () => {
       estoy en mis ordenes
       {myOrders.map((order) => {
         return (
-          <div key={order.id}>
-            <h3>total de la orden es {order.total}</h3>
-            <h4>{order.title}</h4>
+          <div key={order.id} style={{ border: "2px solid black" }}>
+            {order.items.map((prod) => {
+              return (
+                <div key={prod.id}>
+                  <h2>{prod.title}</h2>
+                  <h3>{prod.quantity}</h3>
+                </div>
+              );
+            })}
+            <h3>total de la orden es ${order.total}</h3>
           </div>
         );
       })}

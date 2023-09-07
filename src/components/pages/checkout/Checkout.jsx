@@ -12,10 +12,11 @@ import {
   doc,
   updateDoc,
   serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
 
 const Checkout = () => {
-  const { cart, getTotalPrice } = useContext(CartContext);
+  const { cart, getTotalPrice, clearCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
 
   const [preferenceId, setPreferenceId] = useState(null);
@@ -25,6 +26,7 @@ const Checkout = () => {
   });
 
   const [orderId, setOrderId] = useState(null);
+  const [shipmentCost, setShipmentCost] = useState(0);
 
   const location = useLocation(); //para guardar los query.params que devuelve mercadopago
   const queryParams = new URLSearchParams(location.search);
@@ -51,12 +53,26 @@ const Checkout = () => {
       });
 
       localStorage.removeItem("order");
+      clearCart(); //traido de cartcontext para que al finalizar la compra el carrito aparezca vacio
     }
   }, [paramValue]);
 
   initMercadoPago(import.meta.env.VITE_PUBLICKEY, {
     locale: "es-AR",
   });
+
+  useEffect(() => {
+    //costo de envio
+    let shipmentCollection = collection(db, "shipment");
+    let shipmentDoc = doc(shipmentCollection, "nJfzlXPLFzkZzKwIITL7");
+    getDoc(shipmentDoc)
+      .then((res) => {
+        setShipmentCost(res.data().cost);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const createPreference = async () => {
     //en vez de mandar un arreglo con toda la informacion (cart), le mandamos un nuevo arreglo a partir de cart pero que tenga las propiedades necesarias asi no le mandamos tanta informacion al backend
@@ -72,7 +88,7 @@ const Checkout = () => {
         "http://localhost:8080/create_preference",
         {
           items: newArray, //los items son los productos que van aparecer en mercadopago
-          shipment_cost: 10, //costo de envio
+          shipment_cost: shipmentCost, //costo de envio
         }
       );
 
@@ -91,7 +107,7 @@ const Checkout = () => {
       cp: userData.cp,
       phone: userData.phone,
       items: cart,
-      total,
+      total: total + shipmentCost,
       email: user.email,
     };
     //guardamos la variable en el local storage para que cuando se abra el wallet de mercadopago y vuelva a la pagina, que se recarga, que no se pierdan los datos, luego los traemos como hice mas arriba en el useEffect
@@ -128,7 +144,7 @@ const Checkout = () => {
         <>
           <h2>El pago se realizo exitosamente</h2>
           <h3>su orden de compra es {orderId}</h3>
-          <Link to="/shop">Seguri comprando</Link>
+          <Link to="/shop">Seguir comprando</Link>
         </>
       )}
       {preferenceId && (
