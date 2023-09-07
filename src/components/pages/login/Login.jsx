@@ -48,7 +48,7 @@ const Login = () => {
           email: res.user.email,
           rol: userDoc.data().rol,
         };
-        console.log("usuario:", finalyUser);
+        //console.log("usuario:", finalyUser);
         handleLogin(finalyUser); //el usuario logeado
         navigate("/");
       }
@@ -59,7 +59,12 @@ const Login = () => {
 
   const googleSignIn = async () => {
     const res = await loginGoogle();
-    console.log(res);
+    let finalyUser = {
+      email: res.user.email,
+      rol: "user",
+    };
+    handleLogin(finalyUser); //el usuario logeado
+    navigate("/");
   };
 
   return (
