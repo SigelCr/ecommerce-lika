@@ -85,7 +85,7 @@ const Checkout = () => {
     });
     try {
       let response = await axios.post(
-        "http://localhost:8080/create_preference",
+        "https://backend-tiendalika.vercel.app/create_preference",
         {
           items: newArray, //los items son los productos que van aparecer en mercadopago
           shipment_cost: shipmentCost, //costo de envio
