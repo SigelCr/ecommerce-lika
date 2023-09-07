@@ -1,9 +1,30 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../../firebaseConfig";
+import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await forgotPassword(email);
+    Swal.fire({
+      title: "Se envio un email a tu correo electronico",
+      text: "Busca en correo no deseado y segui los pasos",
+      backdrop: true,
+      timer: 6000,
+      toast: true,
+      timerProgressBar: true,
+    });
+    setTimeout(() => {
+      navigate("/login");
+    }, 3000);
+  };
 
   return (
     <div>
@@ -22,7 +43,7 @@ const ForgotPassword = () => {
         <Typography variant="h5" color={"primary"}>
           ¿Olvidaste tu contraseña?
         </Typography>
-        <form>
+        <form onSubmit={handleSubmit}>
           <Grid
             container
             rowSpacing={2}
@@ -36,6 +57,7 @@ const ForgotPassword = () => {
                 label="Email"
                 fullWidth
                 name="email"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={10} md={12}>

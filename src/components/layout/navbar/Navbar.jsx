@@ -10,44 +10,86 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 
-import { Link, Outlet } from "react-router-dom";
-import "./Navbar.css";
-import { useState } from "react";
+import { Link, useNavigate, Outlet } from "react-router-dom";
+import { useContext, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { menuItems } from "../../../router/navigation";
+import { logout } from "../../../firebaseConfig";
+
+import style from "./Navbar.module.css";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../context/AuthContext";
+
 const drawerWidth = 200;
 
 function Navbar(props) {
+  const { logoutContext, user } = useContext(AuthContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const rolAdmin = import.meta.env.VITE_ROL_ADMIN;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleLogout = () => {
+    Swal.fire({
+      position: "top",
+      title: "Sesion cerrada correctamente",
+      icon: `success`,
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      toast: true,
+    });
+    logout();
+    logoutContext();
+    navigate("/login");
+  };
+
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar className={style.containerToolbar} />
 
-      <List>
+      <List className={style.containerList}>
         {menuItems.map(({ id, path, title, Icon }) => {
           return (
             <Link key={id} to={path}>
-              <ListItem disablePadding>
+              <ListItem disablePadding className={style.containerMenuDrawer}>
                 <ListItemButton>
                   <ListItemIcon>
                     <Icon sx={{ color: "whitesmoke" }} />
                   </ListItemIcon>
                   <ListItemText primary={title} sx={{ color: "whitesmoke" }} />
+                  {/*color letras drawer*/}
                 </ListItemButton>
               </ListItem>
             </Link>
           );
         })}
 
+        {/* vista dashboard solo para el admin */}
+        {user.rol === rolAdmin && (
+          <Link to={"/dashboard"}>
+            <ListItem disablePadding className={style.containerMenuDrawer}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <DashboardCustomizeIcon sx={{ color: "whitesmoke" }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Dashboard"}
+                  sx={{ color: "whitesmoke" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        )}
+
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon sx={{ color: "whitesmoke" }} />
             </ListItemIcon>
@@ -66,6 +108,7 @@ function Navbar(props) {
 
   return (
     <Box sx={{ display: "flex" }}>
+      {/*box: fondo de pagina*/}
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -74,10 +117,16 @@ function Navbar(props) {
         }}
       >
         <Toolbar
-          sx={{ gap: "20px", display: "flex", justifyContent: "space-between" }}
+          sx={{
+            gap: "20px",
+            display: "flex",
+            justifyContent: "space-between",
+            background: "green",
+          }}
         >
+          {/*toolbar: fondo del navbar*/}
           <Link to="/" style={{ color: "whitesmoke" }}>
-            Bazar-deco
+            Tienda Lika
           </Link>
           <IconButton
             color="secondary.primary"
@@ -91,6 +140,7 @@ function Navbar(props) {
       </AppBar>
       <Box component="nav" aria-label="mailbox folders">
         <Drawer
+          className={style.drawer}
           container={container}
           variant="temporary"
           open={mobileOpen}
@@ -104,7 +154,7 @@ function Navbar(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "#1976d2",
+              backgroundColor: "green", //fondo del drawer
             },
           }}
         >
