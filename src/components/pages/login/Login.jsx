@@ -122,7 +122,7 @@ const Login = () => {
             to="/forgot-password"
             style={{ color: "steelblue", marginTop: "10px" }}
           >
-            ¿Olvidaste tu contraseña? wachin
+            ¿Olvidaste tu contraseña?
           </Link>
           <Grid container justifyContent="center" spacing={3} mt={2}>
             <Grid item xs={10} md={5}>
@@ -168,7 +168,7 @@ const Login = () => {
               </Typography>
             </Grid>
             <Grid item xs={10} md={5}>
-              <Tooltip title="ingresa con google">
+              <Tooltip title="registrate">
                 <Button
                   variant="contained"
                   fullWidth
