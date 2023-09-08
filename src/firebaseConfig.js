@@ -11,6 +11,9 @@ import {
 
 import { getFirestore } from "firebase/firestore";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: import.meta.env.VITE_AUTH,
@@ -24,6 +27,7 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 export const db = getFirestore(app); //modificar documentos
+const storage = getStorage(app);
 
 //SERVICIOS
 
@@ -79,3 +83,10 @@ export const forgotPassword = async (email) => {
 //BASE DE DATOS
 
 //STORAGE
+//cargar imagen del model
+export const uploadFile = async (file) => {
+  const storageRef = ref(storage, v4());
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  return url;
+};

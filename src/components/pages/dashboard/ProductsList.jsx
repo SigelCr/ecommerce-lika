@@ -30,10 +30,10 @@ const style = {
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
-  p: 4,
+  p: 1, //pading
 };
 
-const ProductsList = ({ products }) => {
+const ProductsList = ({ products, setModifiedProduct }) => {
   const [open, setOpen] = useState(false);
 
   const editProduct = (id) => {
@@ -42,6 +42,7 @@ const ProductsList = ({ products }) => {
 
   const deleteProduct = (id) => {
     deleteDoc(doc(db, "products", id));
+    console.log(id);
   };
 
   const handleClose = () => {
@@ -63,6 +64,7 @@ const ProductsList = ({ products }) => {
             <TableRow>
               <TableCell align="left">Id</TableCell>
               <TableCell align="left">Nombre</TableCell>
+              <TableCell align="left">Descripcion</TableCell>
               <TableCell align="left">Precio</TableCell>
               <TableCell align="left">Stock</TableCell>
               <TableCell align="left">Imagen</TableCell>
@@ -81,6 +83,9 @@ const ProductsList = ({ products }) => {
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {prod.title}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {prod.description}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {prod.unit_price}
@@ -133,7 +138,10 @@ const ProductsList = ({ products }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ProductsForm />
+          <ProductsForm
+            handleClose={handleClose}
+            setModifiedProduct={setModifiedProduct}
+          />
         </Box>
       </Modal>
     </div>

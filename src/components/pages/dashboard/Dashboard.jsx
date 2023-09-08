@@ -25,7 +25,10 @@ const Dashboard = () => {
   return (
     <div>
       <h4>Zona para subir, editar, eliminar productos:</h4>
-      <ProductsList products={products} />
+      <ProductsList
+        products={products}
+        setModifiedProduct={setModifiedProduct}
+      />
     </div>
   );
 };
