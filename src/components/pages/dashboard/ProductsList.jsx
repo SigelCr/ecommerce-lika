@@ -19,6 +19,7 @@ import { db } from "../../../firebaseConfig";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 import ProductsForm from "./ProductsForm";
+import Swal from "sweetalert2";
 
 //estilos para el modal
 const style = {
@@ -35,25 +36,50 @@ const style = {
 
 const ProductsList = ({ products, setModifiedProduct }) => {
   const [open, setOpen] = useState(false);
-
-  const editProduct = (id) => {
-    console.log(id);
-  };
+  const [productSelected, setProductSelected] = useState(null);
 
   const deleteProduct = (id) => {
-    deleteDoc(doc(db, "products", id));
-    console.log(id);
+    Swal.fire({
+      position: "center",
+      title: "¿Eliminar este producto?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Si",
+      denyButtonText: `No`,
+      toast: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteDoc(doc(db, "products", id));
+        setModifiedProduct(true);
+        Swal.fire({
+          title: "Producto eliminado",
+          toast: true,
+          icon: "success",
+        });
+      } else if (result.isDenied) {
+        setModifiedProduct(false);
+        Swal.fire({
+          title: "Producto sin modificar",
+          toast: true,
+        });
+      }
+    });
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleOpen = (product) => {
+    setProductSelected(product);
+    setOpen(true);
+  };
+
   return (
     <div>
       <Button
         onClick={() => {
-          setOpen(true);
+          handleOpen(null);
         }}
       >
         Agregar nuevo producto
@@ -109,7 +135,7 @@ const ProductsList = ({ products, setModifiedProduct }) => {
                 >
                   <IconButton
                     onClick={() => {
-                      editProduct(prod.id);
+                      handleOpen(prod);
                     }}
                   >
                     Editar
@@ -139,6 +165,8 @@ const ProductsList = ({ products, setModifiedProduct }) => {
       >
         <Box sx={style}>
           <ProductsForm
+            productSelected={productSelected}
+            setProductSelected={setProductSelected}
             handleClose={handleClose}
             setModifiedProduct={setModifiedProduct}
           />

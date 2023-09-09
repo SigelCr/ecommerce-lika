@@ -1,9 +1,14 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { db, uploadFile } from "../../../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 
-const ProductsForm = ({ handleClose, setModifiedProduct }) => {
+const ProductsForm = ({
+  handleClose,
+  setModifiedProduct,
+  setProductSelected,
+  productSelected,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [newProduct, setNewProduct] = useState({
@@ -20,30 +25,66 @@ const ProductsForm = ({ handleClose, setModifiedProduct }) => {
   const handleImage = async () => {
     setIsLoading(true);
     let url = await uploadFile(file); //la url de la imagen, es la propiedad image
-    setNewProduct({ ...newProduct, image: url });
+
+    if (productSelected) {
+      //editando
+      setProductSelected({
+        ...productSelected,
+        image: url,
+      });
+    } else {
+      //creando
+      setNewProduct({ ...newProduct, image: url });
+    }
     setIsLoading(false); //cuando temrina de cargar la imagen se pasa a false
   };
 
   const handleChange = (e) => {
-    setNewProduct({
-      ...newProduct,
-      [e.target.name]: e.target.value,
-    });
+    if (productSelected) {
+      setProductSelected({
+        //para editar el producto
+        ...productSelected,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setNewProduct({
+        ...newProduct,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let obj = {
-      //para cambiar lo que viene como texto a numero
-      ...newProduct,
-      unit_price: +newProduct.unit_price,
-      stock: +newProduct.stock,
-    };
+
     const productsCollection = collection(db, "products");
-    addDoc(productsCollection, obj).then(() => {
-      setModifiedProduct(true);
-      handleClose();
-    });
+
+    if (productSelected) {
+      //editando
+      let obj = {
+        //para cambiar lo que viene como texto a numero
+        ...productSelected,
+        unit_price: +productSelected.unit_price,
+        stock: +productSelected.stock,
+      };
+      updateDoc(doc(productsCollection, productSelected.id), obj).then(() => {
+        setModifiedProduct(true);
+        handleClose();
+      });
+    } else {
+      //creando
+      let obj = {
+        //para cambiar lo que viene como texto a numero
+        ...newProduct,
+        unit_price: +newProduct.unit_price,
+        stock: +newProduct.stock,
+      };
+
+      addDoc(productsCollection, obj).then(() => {
+        setModifiedProduct(true);
+        handleClose();
+      });
+    }
   };
 
   return (
@@ -59,35 +100,35 @@ const ProductsForm = ({ handleClose, setModifiedProduct }) => {
       >
         <TextField
           variant="outlined"
-          //      defaultValue={}
+          defaultValue={productSelected?.title}
           label="Nombre"
           name="title"
           onChange={handleChange}
         />
         <TextField
           variant="outlined"
-          //    defaultValue={}
+          defaultValue={productSelected?.description}
           label="Descripcion"
           name="description"
           onChange={handleChange}
         />
         <TextField
           variant="outlined"
-          //      defaultValue={}
+          defaultValue={productSelected?.unit_price}
           label="Precio"
           name="unit_price"
           onChange={handleChange}
         />
         <TextField
           variant="outlined"
-          //    defaultValue={}
+          defaultValue={productSelected?.stock}
           label="Stock"
           name="stock"
           onChange={handleChange}
         />
         <TextField
           variant="outlined"
-          //     defaultValue={}
+          defaultValue={productSelected?.category}
           label="Categoria"
           name="category"
           onChange={handleChange}
@@ -95,8 +136,7 @@ const ProductsForm = ({ handleClose, setModifiedProduct }) => {
         <TextField
           type="file"
           variant="outlined"
-          //      defaultValue={}
-
+          // defaultValue={productSelected?.image}
           onChange={(e) => setFile(e.target.files[0])}
         />
         {file && (
@@ -114,7 +154,9 @@ const ProductsForm = ({ handleClose, setModifiedProduct }) => {
             <h6 style={{ textAlign: "center" }}>
               Una vez cargada la imagen, ya puede crear el producto
             </h6>
-            <Button type="submit">Crear producto</Button>
+            <Button type="submit">
+              {productSelected ? "Modificar producto" : "Crear producto"}
+            </Button>
           </>
         )}
       </form>
