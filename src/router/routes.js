@@ -1,26 +1,26 @@
 import Cart from "../components/pages/cart/Cart";
 import Checkout from "../components/pages/checkout/Checkout";
-import Home from "../components/pages/home/Home";
-import ItemDetail from "../components/pages/itemDetail/ItemDetailContainer";
-import ItemListContainer from "../components/pages/itemlist/ItemListContainer";
+//import Home from "../components/pages/home/Home";
+//import ItemDetail from "../components/pages/itemDetail/ItemDetailContainer";
+//import ItemListContainer from "../components/pages/itemlist/ItemListContainer";
 import UserOrders from "../components/pages/userOrders/UserOrders";
 
 export const routes = [
-  {
+  /*   {
     id: "home",
     path: "/",
     Element: Home,
-  },
-  {
+  }, */
+  /*   {
     id: "shop",
     path: "/shop",
     Element: ItemListContainer,
-  },
-  {
+  }, */
+  /*   {
     id: "detail",
     path: "/itemDetail/:id",
     Element: ItemDetail,
-  },
+  }, */
   {
     id: "cart",
     path: "/cart",
@@ -36,5 +36,4 @@ export const routes = [
     path: "/user-orders",
     Element: UserOrders,
   },
-  //
 ];
