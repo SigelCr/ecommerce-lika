@@ -5,10 +5,12 @@ import { getDoc, collection, doc } from "firebase/firestore";
 import ItemDetail from "./ItemDetail";
 import Swal from "sweetalert2";
 import { CartContext } from "../../../context/CartContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 const ItemDetailContainer = () => {
   const { id } = useParams(); //con esto traemos la ruta dinamica, traemos el id del producto
   const { addToCart, getQuantityById } = useContext(CartContext);
+  const { isLogged } = useContext(AuthContext);
   let quantity = getQuantityById(id);
   const [product, setProduct] = useState(null);
   const [counter, setCounter] = useState(quantity || 1);
@@ -51,32 +53,82 @@ const ItemDetailContainer = () => {
     };
 
     addToCart(obj);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      html: `Se agrego el producto ${product.title} al carrito`,
-      timer: 20000,
-      toast: true,
-      timerProgressBar: true,
-      showCancelButton: true,
-      cancelButtonText: `Seguir navegando`,
-      confirmButtonText: `Ir al carrito`,
-      showCloseButton: true,
-      willOpen: () => {
-        const confirmButton = Swal.getConfirmButton();
-        confirmButton.addEventListener("click", () => {
-          // Realizar la navegación utilizando el hook useNavigate
-          navigate("/cart");
-        });
-      },
-      willClose: () => {
-        const confirmButton = Swal.getConfirmButton();
-        confirmButton.removeEventListener("click", () => {
-          // Eliminar el evento para evitar fugas de memoria
-          navigate("/cart");
-        });
-      },
-    });
+    if (isLogged) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        html: `Se agrego el producto ${product.title} al carrito`,
+        timer: 20000,
+        toast: true,
+        timerProgressBar: true,
+        showCancelButton: true,
+        cancelButtonText: `Seguir navegando`,
+        confirmButtonText: `Ir al carrito`,
+        showCloseButton: true,
+        willOpen: () => {
+          const confirmButton = Swal.getConfirmButton();
+          confirmButton.addEventListener("click", () => {
+            // Realizar la navegación utilizando el hook useNavigate
+            navigate("/cart");
+          });
+        },
+        willClose: () => {
+          const confirmButton = Swal.getConfirmButton();
+          confirmButton.removeEventListener("click", () => {
+            // Eliminar el evento para evitar fugas de memoria
+            navigate("/cart");
+          });
+        },
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        timer: 20000,
+        toast: true,
+        timerProgressBar: true,
+        showCancelButton: true,
+        cancelButtonText: `Seguir navegando`,
+        confirmButtonText: `Ir al carrito`,
+        showCloseButton: true,
+        willOpen: () => {
+          const confirmButton = Swal.getConfirmButton();
+          confirmButton.addEventListener("click", () => {
+            // Realizar la navegación utilizando el hook useNavigate
+            Swal.fire({
+              position: "center",
+              html: `Debes iniciar sesion para realizar una compra`,
+              timer: 5000,
+              toast: true,
+              timerProgressBar: true,
+              showCancelButton: true,
+              cancelButtonText: `Seguir navegando`,
+              confirmButtonText: `Iniciar sesion`,
+              showCloseButton: true,
+
+              willOpen: () => {
+                const confirmButton = Swal.getConfirmButton();
+                confirmButton.addEventListener("click", () => {
+                  navigate("/login");
+                });
+              },
+            });
+            //luego de 5s se navega al login
+            setTimeout(() => {
+              navigate("/login");
+            }, 5000);
+          });
+        },
+        willClose: () => {
+          const confirmButton = Swal.getConfirmButton();
+          confirmButton.removeEventListener("click", () => {
+            // Eliminar el evento para evitar fugas de memoria
+            alert("nada");
+            navigate("/cart");
+          });
+        },
+      });
+    }
   };
 
   return (

@@ -25,7 +25,7 @@ import { AuthContext } from "../../../context/AuthContext";
 const drawerWidth = 200;
 
 function Navbar(props) {
-  const { logoutContext, user } = useContext(AuthContext);
+  const { logoutContext, user, isLogged } = useContext(AuthContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
@@ -36,19 +36,33 @@ function Navbar(props) {
   };
 
   const handleLogout = () => {
-    Swal.fire({
-      position: "top",
-      title: "Sesion cerrada correctamente",
-      icon: `success`,
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      toast: true,
-    });
-    logout();
-    logoutContext();
-    navigate("/login");
+    if (!isLogged) {
+      //iniciar sesion
+      navigate("/login");
+    } else {
+      //cerrar sesion
+      Swal.fire({
+        position: "top",
+        title: "Sesion cerrada correctamente",
+        icon: `success`,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        toast: true,
+      });
+      logout();
+      logoutContext();
+      navigate("/login");
+    }
   };
+
+  /*   const loginLogout = () => {
+    if (!isLogged) {
+      return "Iniciar sesion";
+    } else {
+      return "Cerrar sesion";
+    }
+  }; */
 
   const drawer = (
     <div>
@@ -94,7 +108,7 @@ function Navbar(props) {
               <LogoutIcon sx={{ color: "whitesmoke" }} />
             </ListItemIcon>
             <ListItemText
-              primary={"Cerrar sesion"}
+              primary={!isLogged ? "Iniciar sesion" : "Cerrar sesion"}
               sx={{ color: "whitesmoke" }}
             />
           </ListItemButton>
