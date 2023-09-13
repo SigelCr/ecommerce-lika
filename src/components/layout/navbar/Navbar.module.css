@@ -8,3 +8,14 @@ a {
 .backgroundDrawer {
   background-color: rgb(136, 79, 136);
 }
+/*navbar*/
+.categories {
+  border: 1px solid violet;
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.categories a {
+  margin: 10px;
+}

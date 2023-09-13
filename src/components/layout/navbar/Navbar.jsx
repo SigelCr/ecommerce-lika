@@ -56,14 +56,6 @@ function Navbar(props) {
     }
   };
 
-  /*   const loginLogout = () => {
-    if (!isLogged) {
-      return "Iniciar sesion";
-    } else {
-      return "Cerrar sesion";
-    }
-  }; */
-
   const drawer = (
     <div>
       <Toolbar className={style.containerToolbar} />

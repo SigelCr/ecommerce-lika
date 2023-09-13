@@ -1,14 +1,31 @@
 import { useEffect, useState } from "react";
-import { db } from "../../../firebaseConfig";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import ItemList from "./ItemList";
+import { Link, useParams } from "react-router-dom";
+import style from "./ItemList.module.css";
+import { db } from "../../../firebaseConfig";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
 
+  const { categoryName } = useParams();
+
   useEffect(() => {
-    let myCollection = collection(db, "products");
-    let getCollectionProducts = getDocs(myCollection); //obtene el documento mycollection que de la db, es products
+    //filtrado de categorias
+    let consulta;
+    const productsCollection = collection(db, "products");
+
+    if (categoryName) {
+      const productsCollectionFiltered = query(
+        productsCollection,
+        where("category", "==", categoryName)
+      );
+      consulta = productsCollectionFiltered;
+    } else {
+      consulta = productsCollection;
+    }
+
+    let getCollectionProducts = getDocs(consulta); //obtene el documento mycollection que de la db, es products
     getCollectionProducts
       .then((res) => {
         //para desenscriptar los productos cargados en firebase
@@ -18,14 +35,44 @@ const ItemListContainer = () => {
         setProducts(newArray);
       })
       .catch((error) => console.log(error));
+  }, [categoryName]);
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const categoriesCollection = collection(db, "categories");
+    getDocs(categoriesCollection)
+      .then((res) => {
+        let categoriesResult = res.docs.map((category) => {
+          return {
+            ...category.data(),
+            id: category.id,
+          };
+        });
+        setCategories(categoriesResult);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
-  console.log(products);
+  //para el menu filtrado
 
   return (
-    <h1>
-      <ItemList products={products} />
-    </h1>
+    <>
+      <div className={style.categories}>
+        {categories.map((category) => {
+          return (
+            <Link key={category.id} to={category.path}>
+              {category.title}
+            </Link>
+          );
+        })}
+      </div>
+      <div>
+        <ItemList products={products} />
+      </div>
+    </>
   );
 };
 

@@ -141,11 +141,11 @@ const Login = () => {
                   textShadow: "2px 2px 2px grey",
                 }}
               >
-                Ingresar
+                Iniciar sesion
               </Button>
             </Grid>
             <Grid item xs={10} md={5}>
-              <Tooltip title="ingresa con google">
+              <Tooltip title="Iniciar sesion con Google">
                 <Button
                   variant="contained"
                   startIcon={<GoogleIcon />}
@@ -158,7 +158,7 @@ const Login = () => {
                     textShadow: "2px 2px 2px grey",
                   }}
                 >
-                  Ingresa con google
+                  Iniciar sesion con google
                 </Button>
               </Tooltip>
             </Grid>
@@ -173,7 +173,7 @@ const Login = () => {
               </Typography>
             </Grid>
             <Grid item xs={10} md={5}>
-              <Tooltip title="registrate">
+              <Tooltip title="Registrarse">
                 <Button
                   variant="contained"
                   fullWidth
@@ -185,7 +185,7 @@ const Login = () => {
                     textShadow: "2px 2px 2px grey",
                   }}
                 >
-                  Registrate
+                  Registrarse
                 </Button>
               </Tooltip>
             </Grid>

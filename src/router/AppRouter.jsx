@@ -46,6 +46,10 @@ const AppRouter = () => {
         <Route path="/" element={<Home />} />
         {/* tienda */}
         <Route path="/shop" element={<ItemListContainer />} />
+        <Route
+          path="/shop/category/:categoryName"
+          element={<ItemListContainer />}
+        />
         {/* detalle del producto */}
         <Route path="/itemDetail/:id" element={<ItemDetailContainer />} />
       </Route>

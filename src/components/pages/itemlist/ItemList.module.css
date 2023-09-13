@@ -1,3 +1,9 @@
+.categories {
+  border: 1px solid violet;
+  display: flex;
+  justify-content: space-around;
+}
+
 .container {
   border: 1px solid red;
 }

@@ -53,6 +53,7 @@ const ItemDetailContainer = () => {
     };
 
     addToCart(obj);
+
     if (isLogged) {
       Swal.fire({
         position: "center",
@@ -97,7 +98,7 @@ const ItemDetailContainer = () => {
             // Realizar la navegación utilizando el hook useNavigate
             Swal.fire({
               position: "center",
-              html: `Debes iniciar sesion para realizar una compra`,
+              html: `Debes registarte e iniciar sesion para realizar una compra`,
               timer: 5000,
               toast: true,
               timerProgressBar: true,
@@ -105,25 +106,26 @@ const ItemDetailContainer = () => {
               cancelButtonText: `Seguir navegando`,
               confirmButtonText: `Iniciar sesion`,
               showCloseButton: true,
-
               willOpen: () => {
                 const confirmButton = Swal.getConfirmButton();
                 confirmButton.addEventListener("click", () => {
                   navigate("/login");
                 });
               },
+              willClose: () => {
+                const confirmButton = Swal.getConfirmButton();
+                confirmButton.removeEventListener("click", () => {
+                  // Eliminar el evento para evitar fugas de memoria
+                  navigate("/login");
+                });
+              },
             });
-            //luego de 5s se navega al login
-            setTimeout(() => {
-              navigate("/login");
-            }, 5000);
           });
         },
         willClose: () => {
           const confirmButton = Swal.getConfirmButton();
           confirmButton.removeEventListener("click", () => {
             // Eliminar el evento para evitar fugas de memoria
-            alert("nada");
             navigate("/cart");
           });
         },
