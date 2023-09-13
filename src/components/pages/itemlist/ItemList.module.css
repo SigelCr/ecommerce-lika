@@ -1,9 +1,20 @@
 .categories {
-  border: 1px solid violet;
   display: flex;
   justify-content: space-around;
 }
 
+.filtros {
+  color: black; /*color de las letras del submenu de productos*/
+  font-size: 20px;
+  padding: 5px;
+}
+.filtros:hover {
+  color: rgb(21, 219, 61);
+}
+
+.loading {
+  width: 200px;
+}
 .container {
   border: 1px solid red;
 }

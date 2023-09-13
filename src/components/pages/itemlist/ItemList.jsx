@@ -4,7 +4,6 @@ import style from "./ItemList.module.css";
 const ItemList = ({ products }) => {
   return (
     <div>
-      <h1>Nuestros productos</h1>
       {products.map((product) => {
         return (
           <div className={style.container} key={product.id}>

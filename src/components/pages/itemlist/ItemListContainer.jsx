@@ -56,14 +56,35 @@ const ItemListContainer = () => {
       });
   }, []);
 
+  //tecnica de renderizado antes de que se vean los productos
+  const loading = (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/ecommerce-lika.appspot.com/o/297%20(1).gif?alt=media&token=175eda9c-354b-4b15-9d3a-b045422b1f21"
+        alt="loading"
+        className={style.loading}
+      />
+    </div>
+  );
+
   //para el menu filtrado
 
   return (
     <>
+      {products.length === 0 && loading}
       <div className={style.categories}>
         {categories.map((category) => {
           return (
-            <Link key={category.id} to={category.path}>
+            <Link
+              key={category.id}
+              to={category.path}
+              className={style.filtros}
+            >
               {category.title}
             </Link>
           );
