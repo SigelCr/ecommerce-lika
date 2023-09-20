@@ -17,12 +17,19 @@ const Cart = () => {
       showCancelButton: false,
       confirmButtonText: "Si",
       denyButtonText: `No`,
+      toast: true,
     }).then((result) => {
       if (result.isConfirmed) {
         clearCart();
-        Swal.fire("Se limpio el carrito", "", "success");
+        Swal.fire({
+          title: "Se limpio el carrito",
+          toast: true,
+        });
       } else if (result.isDenied) {
-        Swal.fire("El carrito sigue igual");
+        Swal.fire({
+          title: "El carrito sigue igual",
+          toast: true,
+        });
       }
     });
   };
