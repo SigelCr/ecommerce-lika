@@ -1,37 +1,74 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp, db } from "../../../firebaseConfig";
 import { setDoc, doc } from "firebase/firestore";
 
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 const Register = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [userCredentials, setUserCredentials] = useState({
+
+  /*   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
     confirmPassword: "",
+  }); */
+
+  /*   const handleChange = (e) => {
+    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
+  }; */
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("Este campo es obligatorio")
+        .min(3, "El nombre debe tener como minimo 3 caracteres"),
+      email: Yup.string()
+        .email("El campo debe ser un email")
+        .required("Este campo es obligatorio"),
+      password: Yup.string()
+        .required("Este campo es obligatorio")
+        .matches(/^(?=.*[a-z]).{6,15}$/, {
+          message:
+            "La contraseña debe tener 6 caracteres como mínimo y 15 como máximo, en minusculas",
+        }),
+      confirmPassword: Yup.string()
+        .required("Este campo es obligatorio")
+        .oneOf([Yup.ref("password")], "Las contraseñas no coinciden"),
+    }),
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      try {
+        let res = await signUp(values);
+        console.log(res);
+        //para que cuando un usuario se registre siempre sea con el rol "user"
+        if (res.user.uid) {
+          await setDoc(doc(db, "users", res.user.uid), {
+            rol: "user",
+            email: res.user.email,
+            name: values.name,
+          }); //a futuro poner nombre o nick asi tambien se guarda en firebase el nick el rol y el email, asi podria poner bienvenido "nick" etc
+        }
+        //taria para poner un alert que diga que te registarte con exito
+        navigate("/login");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   });
 
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const nickk = formik.values.name;
+  console.log(nickk);
 
-  const handleChange = (e) => {
-    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  /*   const handleSubmit = async (e) => {
     e.preventDefault();
     let res = await signUp(userCredentials);
     //console.log(res);
@@ -44,6 +81,9 @@ const Register = () => {
     } //taria para poner un alert que diga que te registarte con exito
     navigate("/login");
   };
+ */
+
+  console.log(formik.errors);
 
   return (
     <Box
@@ -57,7 +97,7 @@ const Register = () => {
         // backgroundColor: theme.palette.secondary.main,
       }}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
         <Grid
           container
           rowSpacing={2}
@@ -66,69 +106,43 @@ const Register = () => {
         >
           <Grid item xs={10} md={12}>
             <TextField
-              name="email"
-              label="Email"
+              name="name"
+              value={formik.values.name}
+              label="Nombre o Nick"
               fullWidth
-              onChange={handleChange}
+              onChange={formik.handleChange}
+              error={formik.errors.name ? true : false}
+              helperText={formik.errors.name}
             />
           </Grid>
           <Grid item xs={10} md={12}>
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="outlined-adornment-password">
-                Contraseña
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? (
-                        <VisibilityOff color="primary" />
-                      ) : (
-                        <Visibility color="primary" />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Contraseña"
-              />
-            </FormControl>
+            <TextField
+              name="email"
+              value={formik.values.email}
+              label="Email"
+              fullWidth
+              onChange={formik.handleChange}
+              error={formik.errors.email ? true : false}
+              helperText={formik.errors.email}
+            />
           </Grid>
           <Grid item xs={10} md={12}>
-            <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="outlined-adornment-password">
-                Confirmar contraseña
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                onChange={handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? (
-                        <VisibilityOff color="primary" />
-                      ) : (
-                        <Visibility color="primary" />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Confirmar contraseña"
-              />
-            </FormControl>
+            <TextField
+              label="Contraseña"
+              onChange={formik.handleChange}
+              name="password"
+              error={formik.errors.password ? true : false}
+              helperText={formik.errors.password}
+            />
+          </Grid>
+          <Grid item xs={10} md={12}>
+            <TextField
+              label="Confirmar contraseña"
+              onChange={formik.handleChange}
+              name="confirmPassword"
+              error={formik.errors.confirmPassword ? true : false}
+              helperText={formik.errors.confirmPassword}
+            />
           </Grid>
           <Grid container justifyContent="center" spacing={3} mt={2}>
             <Grid item xs={10} md={7}>

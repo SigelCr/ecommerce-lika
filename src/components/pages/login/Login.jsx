@@ -22,6 +22,7 @@ import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
   const { handleLogin } = useContext(AuthContext);
+
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -36,8 +37,48 @@ const Login = () => {
     setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value });
   };
 
+  /*   const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("El campo debe ser un email")
+        .required("Este campo es obligatorio"),
+      password: Yup.string()
+        .required("Este campo es obligatorio")
+        .matches(/^(?=.*[a-z]).{6,15}$/, {
+          message:
+            "La contraseña debe tener 6 caracteres como mínimo y 15 como máximo, en minusculas",
+        }),
+    }),
+    onSubmit: async (values) => {
+      try {
+        const res = await onSigIn(values);
+        console.log(res);
+        if (res.user) {
+          const userCollection = collection(db, "users");
+          const userRef = doc(userCollection, res.user.uid);
+          const userDoc = await getDoc(userRef); //usuario de la base de datos
+          let finalyUser = {
+            email: res.user.email,
+            rol: userDoc.data().rol,
+          };
+          //console.log("usuario:", finalyUser);
+          handleLogin(finalyUser); //el usuario logeado
+          console.log(nick);
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  }); */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await onSigIn(userCredentials);
       if (res.user) {
@@ -94,6 +135,7 @@ const Login = () => {
               fullWidth
             />
           </Grid>
+
           <Grid item xs={10} md={12}>
             <FormControl variant="outlined" fullWidth>
               <InputLabel htmlFor="outlined-adornment-password">

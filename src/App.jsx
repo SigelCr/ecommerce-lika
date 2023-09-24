@@ -6,11 +6,11 @@ import AuthContextComponent from "./context/AuthContext";
 function App() {
   return (
     <BrowserRouter>
-        <CartContextComponent>
-      <AuthContextComponent>
+      <CartContextComponent>
+        <AuthContextComponent>
           <AppRouter />
-      </AuthContextComponent>
-        </CartContextComponent>
+        </AuthContextComponent>
+      </CartContextComponent>
     </BrowserRouter>
   );
 }

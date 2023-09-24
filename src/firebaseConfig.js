@@ -34,6 +34,7 @@ const storage = getStorage(app);
 //AUTH
 
 //login
+//fijarse si x aca si puedo conseguir el mnickname mas adelante
 
 export const onSigIn = async ({ email, password }) => {
   try {
@@ -63,9 +64,14 @@ export const loginGoogle = async () => {
 
 //registro
 
-export const signUp = async ({ email, password }) => {
+export const signUp = async ({ email, password, name }) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
+    const res = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+      name
+    );
     return res;
   } catch (error) {
     console.log(error);
