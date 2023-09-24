@@ -1,0 +1,68 @@
+.cardDetailContainer {
+  border: 2px solid blue;
+  padding: 5px;
+}
+.cardDetail {
+  border: 1px solid red;
+  padding: 5px;
+  margin-bottom: 5px;
+  display: flex;
+}
+.containerInfo {
+  width: 100%;
+  border: 2px solid black;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.img {
+  width: 25%;
+  min-width: 250px;
+  max-height: 280px;
+  border: 1px solid blue;
+}
+.title {
+  font-size: 12px;
+}
+.description {
+  font-size: 12px;
+}
+.price {
+  font-size: 10px;
+}
+.loading {
+  width: 200px;
+}
+/*contador*/
+.counterContainer {
+  border: 2px solid rgb(6, 245, 241);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.counter {
+  border: 2px solid rgb(98, 84, 84);
+  padding: 5px;
+  display: flex;
+  margin: auto;
+}
+.btnCart button {
+  color: red;
+  width: 200px;
+}
+
+/*responsive*/
+
+@media (max-width: 767px) {
+  .cardDetail {
+    flex-direction: column;
+  }
+  .img {
+    margin: auto;
+    width: 200px;
+    height: 250px;
+  }
+}

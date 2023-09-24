@@ -76,22 +76,24 @@ const ItemListContainer = () => {
 
   return (
     <>
-      {products.length === 0 && loading}
-      <div className={style.categories}>
-        {categories.map((category) => {
-          return (
-            <Link
-              key={category.id}
-              to={category.path}
-              className={style.filtros}
-            >
-              {category.title}
-            </Link>
-          );
-        })}
-      </div>
-      <div>
-        <ItemList products={products} />
+      <div className={style.container}>
+        {products.length === 0 && loading}
+        <div className={style.categories}>
+          {categories.map((category) => {
+            return (
+              <Link
+                key={category.id}
+                to={category.path}
+                className={style.filtros}
+              >
+                {category.title}
+              </Link>
+            );
+          })}
+        </div>
+        <div>
+          <ItemList products={products} />
+        </div>
       </div>
     </>
   );
