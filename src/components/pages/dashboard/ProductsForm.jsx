@@ -14,6 +14,7 @@ const ProductsForm = ({
   const [newProduct, setNewProduct] = useState({
     title: "",
     description: "",
+    fullDescription: "",
     unit_price: 0,
     stock: 0,
     category: "",
@@ -108,8 +109,15 @@ const ProductsForm = ({
         <TextField
           variant="outlined"
           defaultValue={productSelected?.description}
-          label="Descripcion"
+          label="Breve Descripcion"
           name="description"
+          onChange={handleChange}
+        />
+        <TextField
+          variant="outlined"
+          defaultValue={productSelected?.fullDescription}
+          label="Descripcion completa"
+          name="fullDescription"
           onChange={handleChange}
         />
         <TextField

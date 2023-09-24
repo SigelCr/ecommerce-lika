@@ -16,3 +16,5 @@ function App() {
 }
 
 export default App;
+
+// para levantar para vista mobile npx vite --host 192.168.0.14

@@ -90,7 +90,8 @@ const ProductsList = ({ products, setModifiedProduct }) => {
             <TableRow>
               <TableCell align="left">Id</TableCell>
               <TableCell align="left">Nombre</TableCell>
-              <TableCell align="left">Descripcion</TableCell>
+              <TableCell align="left">Breve descripcion</TableCell>
+              <TableCell align="left">Descripcion completa</TableCell>
               <TableCell align="left">Precio</TableCell>
               <TableCell align="left">Stock</TableCell>
               <TableCell align="left">Imagen</TableCell>
@@ -112,6 +113,9 @@ const ProductsList = ({ products, setModifiedProduct }) => {
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {prod.description}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {prod.fullDescription}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {prod.unit_price}

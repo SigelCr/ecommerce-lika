@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import style from "./ItemDetail.module.css";
 
 const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
@@ -28,7 +29,7 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
                   <h2>{product.title}</h2>
                 </div>
                 <div className={style.description}>
-                  <p>{product.description}</p>
+                  <p>{product.fullDescription}</p>
                 </div>
                 <div className={style.price}>
                   <h2>${product.unit_price}</h2>
@@ -36,13 +37,19 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
                 {/*counter*/}
                 {product?.stock > 0 ? (
                   <div className={style.counterContainer}>
+                    <p>Elegir cantidad:</p>
                     <div className={style.counter}>
-                      <button onClick={addOne}>+</button>
+                      <button className={style.btnMoreLess} onClick={addOne}>
+                        +
+                      </button>
+
                       <h4>{counter}</h4>
-                      <button onClick={subOne}>-</button>
+                      <button className={style.btnMoreLess} onClick={subOne}>
+                        -
+                      </button>
                     </div>
                     <div className={style.btnCart}>
-                      <button onClick={onAdd}>agregar al carrito</button>
+                      <button onClick={onAdd}>Agregar al carrito</button>
                     </div>
                   </div>
                 ) : (
@@ -57,6 +64,9 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
                     No hay stock
                   </h1>
                 )}
+                <Link to="/shop" style={{ marginTop: "15px", color: "black" }}>
+                  Volver
+                </Link>
               </div>
             </div>
           )}

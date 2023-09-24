@@ -1,5 +1,5 @@
 .cardDetailContainer {
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
   padding: 5px;
 }
 .cardDetail {
@@ -9,8 +9,8 @@
   display: flex;
 }
 .containerInfo {
+  /* border: 2px solid black; */
   width: 100%;
-  border: 2px solid black;
   padding: 5px;
   display: flex;
   flex-direction: column;
@@ -21,13 +21,14 @@
   width: 25%;
   min-width: 250px;
   max-height: 280px;
-  border: 1px solid blue;
+  border: 1px solid rgb(0, 0, 0);
 }
 .title {
   font-size: 12px;
 }
 .description {
   font-size: 12px;
+  border: 1px solid red;
 }
 .price {
   font-size: 10px;
@@ -37,21 +38,29 @@
 }
 /*contador*/
 .counterContainer {
-  border: 2px solid rgb(6, 245, 241);
-  padding: 5px;
+  padding: 10px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   text-align: center;
+  background-color: rgba(9, 9, 9, 0.141);
 }
 .counter {
-  border: 2px solid rgb(98, 84, 84);
   padding: 5px;
   display: flex;
   margin: auto;
 }
 .btnCart button {
-  color: red;
+  color: rgb(10, 9, 9);
   width: 200px;
+  background-color: rgba(7, 7, 7, 0.229);
+  width: 100px;
+}
+.btnMoreLess {
+  color: rgb(10, 9, 9);
+  width: 20px;
+  margin: 10px;
+  background-color: rgba(7, 7, 7, 0.229);
 }
 
 /*responsive*/
