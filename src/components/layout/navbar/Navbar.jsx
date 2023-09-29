@@ -113,7 +113,7 @@ function Navbar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box className={style.backgroundAllPage}>
       {/*box: fondo de pagina*/}
       <CssBaseline />
       <AppBar
@@ -127,7 +127,7 @@ function Navbar(props) {
             gap: "20px",
             display: "flex",
             justifyContent: "space-between",
-            background: "green",
+            background: "rgb(241, 168, 115)",
           }}
         >
           {/*toolbar: fondo del navbar*/}
@@ -146,7 +146,7 @@ function Navbar(props) {
       </AppBar>
       <Box component="nav" aria-label="mailbox folders">
         <Drawer
-          className={style.drawer}
+          className={style.drawer} //sombra al abrir drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
@@ -160,7 +160,7 @@ function Navbar(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "green", //fondo del drawer
+              backgroundColor: "rgb(241, 168, 115)", //fondo del drawer
             },
           }}
         >

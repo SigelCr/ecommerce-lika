@@ -64,7 +64,7 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
                     No hay stock
                   </h1>
                 )}
-                <Link to="/shop" style={{ marginTop: "15px", color: "black" }}>
+                <Link to="/shop" className={style.btnBack}>
                   Volver
                 </Link>
               </div>

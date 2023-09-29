@@ -1,5 +1,24 @@
+/*fondo de toda la pagina*/
+.backgroundAllPage {
+  background-color: rgba(246, 137, 4, 0.15);
+}
+
 a {
   text-decoration: none;
+}
+
+.containerMenuDrawer {
+  /*separacion de las opciones del menu drawer*/
+  margin-bottom: 20px;
+  color: rgb(241, 168, 115);
+}
+.containerToolbar {
+  /*parte superiior al abrir el menu*/
+  /* background-image: url("https://res.cloudinary.com/difrhbjlk/image/upload/v1689621961/fondo_n2thhw.png"); */
+  /* background-size: cover; */
+}
+.containerList {
+  /*contenedor de la lista al abirr el menu*/
 }
 /*Drawer*/
 .drawer {

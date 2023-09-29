@@ -86,7 +86,7 @@ const ItemListContainer = () => {
                 to={category.path}
                 className={style.filtros}
               >
-                {category.title}
+                <button>{category.title}</button>
               </Link>
             );
           })}

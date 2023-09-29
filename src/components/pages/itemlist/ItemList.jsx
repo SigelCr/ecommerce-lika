@@ -18,7 +18,10 @@ const ItemList = ({ products }) => {
               <h3>${product.unit_price}</h3>
             </div>
             <div className={style.btn}>
-              <Link to={`/itemDetail/${product.id}`}>
+              <Link
+                to={`/itemDetail/${product.id}`}
+                className={style.btnDetail}
+              >
                 <button>Ver detalle</button>
               </Link>
             </div>
