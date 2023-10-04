@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { CartContext } from "../../../context/CartContext";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import style from "./Cart.module.css";
 
 const Cart = () => {
   const { cart, clearCart, deleteById, getTotalPrice } =
@@ -38,30 +39,56 @@ const Cart = () => {
     <div>
       {cart.length > 0 ? (
         <div>
-          <h1>Productos agregados</h1>
+          <h3
+            style={{
+              fontSize: "10px",
+              textAlign: "end",
+              marginBottom: "20px",
+            }}
+          >
+            <Link to="/shop" style={{ color: "grey" }}>
+              Ver mas productos
+            </Link>
+          </h3>
           {cart.map((product) => {
             return (
-              <div key={product.id}>
-                <h1>{product.title}</h1>
-                <img style={{ width: "100px" }} src={product.image} alt="" />
-                <h2>Cantidad:{product.quantity}</h2>
-                <button onClick={() => deleteById(product.id)}>
-                  eliminar producto
-                </button>
+              <div className={style.container} key={product.id}>
+                <img className={style.img} src={product.image} alt="" />
+                <div className={style.titleAndDescription}>
+                  <h1 className={style.title}>{product.title}</h1>
+                  <h3 className={style.fullDescription}>
+                    {product.fullDescription}
+                  </h3>
+                </div>
+                <div className={style.stockAndPriceAndQuantAndBtn}>
+                  <h3 className={style.quantity}>
+                    Cantidad {product.quantity}
+                  </h3>
+                  <h3 className={style.stock}>Stock {product.stock}</h3>
+                  <h3 className={style.price}>ARS ${product.unit_price}</h3>
+                  <button onClick={() => deleteById(product.id)}>
+                    eliminar producto
+                  </button>
+                </div>
               </div>
             );
           })}
-          <h5>El total a pagar es ${total}</h5>
-          <button onClick={clearCartWithAlert}>
-            eliminar todos los productos
-          </button>
-          <Link to="/checkout">Finalizar compra</Link>
+          <div className={style.containerFinalBtn}>
+            <h5 style={{ fontSize: "18px" }}>Total ARS ${total}</h5>
+            <div>
+              <button onClick={clearCartWithAlert}>Limpiar carrito</button>
+
+              <button>
+                <Link to="/checkout">Finalizar compra</Link>
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
-        <div>
+        <div className={style.containerAddProduct}>
           <h1>No hay ningun producto agregado al carrito</h1>
           <Link to="/shop">
-            <button>Agregar productos</button>
+            <button>Ver productos</button>
           </Link>
         </div>
       )}

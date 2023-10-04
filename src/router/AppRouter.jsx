@@ -10,7 +10,6 @@ import ProtectedUsers from "./ProtectedUsers";
 import ItemListContainer from "../components/pages/itemlist/ItemListContainer"; //
 import Home from "../components/pages/home/Home"; //
 import ItemDetailContainer from "../components/pages/itemDetail/ItemDetailContainer"; //
-import Footer from "../components/layout/footer/Footer";
 
 const AppRouter = () => {
   return (

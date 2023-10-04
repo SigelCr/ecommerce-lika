@@ -37,7 +37,7 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
                 {/*counter*/}
                 {product?.stock > 0 ? (
                   <div className={style.counterContainer}>
-                    <p>Elegir cantidad:</p>
+                    <p>Elegir cantidad</p>
                     <div className={style.counter}>
                       <button className={style.btnMoreLess} onClick={addOne}>
                         +
@@ -72,7 +72,7 @@ const ItemDetail = ({ product, counter, addOne, subOne, onAdd, quantity }) => {
           )}
 
           {quantity && (
-            <h6>
+            <h6 style={{ textAlign: "start", margin: "20px" }}>
               Ahora tenes {quantity} {product?.title} en el carrito
             </h6>
           )}
