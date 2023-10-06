@@ -64,7 +64,7 @@ const Cart = () => {
                   <h3 className={style.quantity}>
                     Cantidad {product.quantity}
                   </h3>
-                  <h3 className={style.stock}>Stock {product.stock}</h3>
+                  <h3 className={style.stock}>Disponibles {product.stock}</h3>
                   <h3 className={style.price}>ARS ${product.unit_price}</h3>
                   <button onClick={() => deleteById(product.id)}>
                     eliminar producto
@@ -76,10 +76,12 @@ const Cart = () => {
           <div className={style.containerFinalBtn}>
             <h5 style={{ fontSize: "18px" }}>Total ARS ${total}</h5>
             <div>
-              <button onClick={clearCartWithAlert}>Limpiar carrito</button>
+              {cart.length > 1 && (
+                <button onClick={clearCartWithAlert}>Limpiar carrito</button>
+              )}
 
               <button>
-                <Link to="/checkout">Finalizar compra</Link>
+                <Link to="/checkout">Continuar compra</Link>
               </button>
             </div>
           </div>

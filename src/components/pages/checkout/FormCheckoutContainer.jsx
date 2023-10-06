@@ -151,7 +151,7 @@ const Checkout = () => {
         .required("Este campo es obligatorio")
         .min(10, "Direccion de punto de entrega con una pequeña explicacion"),
     }),
-    validateOnChange: false,
+    validateOnChange: true,
   });
 
   console.log(formik.errors);
@@ -161,14 +161,11 @@ const Checkout = () => {
       {!orderId ? (
         <>
           <div className={styled.container}>
-            {formik.values &&
-              formik.values.name &&
-              formik.values.name.length > 0 && (
-                <p className={styled.p}>
-                  Le aparecera el boton de comprar una vez que complete todos
-                  los campos correctamente
-                </p>
-              )}
+            <p className={styled.p}>
+              Podra continuar con la compra una vez que complete todos los
+              campos correctamente
+            </p>
+
             <form
               onSubmit={formik.handleSubmit}
               className={styled.containerInput}
@@ -217,15 +214,29 @@ const Checkout = () => {
               {!formik.errors.name &&
                 !formik.errors.cp &&
                 !formik.errors.phone &&
-                !formik.errors.address &&
-                formik.values.address.length >= 10 && (
+                !formik.errors.address && (
                   <div style={{ display: "flex", justifyContent: "center" }}>
                     <Button type="submit" className={styled.btn}>
-                      Iniciar compra
+                      {!preferenceId
+                        ? "Iniciar compra"
+                        : "Eliga metodo de pago"}
                     </Button>
                   </div>
                 )}
             </form>
+            {/*si hay errores en el input no se ve el btn de mercadopago*/}
+            {!formik.errors.name &&
+              !formik.errors.cp &&
+              !formik.errors.phone &&
+              !formik.errors.address && (
+                <div className={styled.btnMercadoPago}>
+                  {preferenceId && (
+                    <Wallet
+                      initialization={{ preferenceId, redirectMode: "self" }}
+                    />
+                  )}
+                </div>
+              )}
             <Link to="/cart">Regresar</Link>
           </div>
         </>
@@ -235,9 +246,6 @@ const Checkout = () => {
           <h3>su orden de compra es {orderId}</h3>
           <Link to="/shop">Seguir comprando</Link>
         </>
-      )}
-      {preferenceId && (
-        <Wallet initialization={{ preferenceId, redirectMode: "self" }} />
       )}
     </div>
   );

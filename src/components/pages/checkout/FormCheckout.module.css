@@ -32,7 +32,7 @@
 .btn {
   text-decoration: none;
   margin: 20px auto 0px auto;
-  width: 80px;
+  width: 100px;
 
   padding: 5px;
   font-size: 17px;
@@ -68,4 +68,9 @@
   font-size: 8px;
   min-width: 20px;
   max-width: 500px;
+}
+
+.btnMercadoPago {
+  width: 300px;
+  margin: auto;
 }

@@ -1,0 +1,14 @@
+.container {
+  border: 5px solid red;
+  padding: 5px;
+}
+.containerCard {
+  border: 1px solid black;
+  margin: 5px auto 5px auto;
+  padding: 5px;
+  width: 75%;
+}
+.image {
+  border: 1px solid red;
+  width: 100px;
+}

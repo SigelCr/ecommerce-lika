@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { db } from "../../../firebaseConfig";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { AuthContext } from "../../../context/AuthContext";
+import style from "./UserOrders.module.css";
+import { Link } from "react-router-dom";
 
 const UserOrders = () => {
   const [myOrders, setMyOrders] = useState([]);
@@ -30,24 +32,46 @@ const UserOrders = () => {
   }, [user.email]);
 
   return (
-    <div>
-      estoy en mis ordenes
-      {myOrders.map((order) => {
-        return (
-          <div key={order.id} style={{ border: "2px solid black" }}>
-            {order.items.map((prod) => {
-              return (
-                <div key={prod.id}>
-                  <h2>{prod.title}</h2>
-                  <h3>{prod.quantity}</h3>
-                </div>
-              );
-            })}
-            <h3>total de la orden es ${order.total}</h3>
+    <>
+      {myOrders.length >= 1 ? (
+        <div className={style.container}>
+          <h1>estoy en mis ordenes</h1>
+          {myOrders.map((order) => {
+            return (
+              <div key={order.id} className={style.containerCard}>
+                {order.items.map((prod) => {
+                  return (
+                    <div key={prod.id}>
+                      <div className={style.title}>
+                        <h2>{prod.title}</h2>
+                      </div>
+                      <img className={style.image} src={prod.image} alt="" />
+                      <div className={style.description}>
+                        <h3>{prod.description}</h3>
+                      </div>
+                      <div className={style.price}>
+                        <h3>${prod.unit_price}</h3>
+                      </div>
+                    </div>
+                  );
+                })}
+                <h3>total de la orden es ${order.total}</h3>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <>
+          <div style={{ textAlign: "center" }}>
+            <h1 style={{ margin: "5px" }}>No has comprado nada aún</h1>
+            <h3 style={{ margin: "5px" }}>!Chusmea nuestros productos!</h3>
+            <Link to="/shop" style={{ color: "black" }}>
+              Ver productos
+            </Link>
           </div>
-        );
-      })}
-    </div>
+        </>
+      )}
+    </>
   );
 };
 
